@@ -1,0 +1,137 @@
+@model IEnumerable<Patient>
+
+@{
+    ViewData["Title"] = "My Patients";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-users me-2"></i>My Patients
+            </h3>
+        </div>
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No patients assigned yet</h5>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user me-2"></i>Name</th>
+                                <th><i class="fas fa-id-card me-2"></i>TC</th>
+                                <th><i class="fas fa-birthday-cake me-2"></i>Age</th>
+                                <th><i class="fas fa-notes-medical me-2"></i>Disease</th>
+                                <th><i class="fas fa-notes-medical me-2"></i>Medical Records</th>
+                                <th><i class="fas fa-notes-medical me-2"></i>Medicine</th>
+                                <th><i class="fas fa-cog me-2"></i>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var patient in Model)
+                            {
+                                <tr>
+                                    <td>@patient.FirstName @patient.LastName</td>
+                                    <td>@patient.TC</td>
+                                    <td>@patient.Age</td>
+                                    <td>@(string.IsNullOrEmpty(patient.Disease) ? "No disease recorded" : patient.Disease)</td>
+                                    <td>@(string.IsNullOrEmpty(patient.MedicalRecord) ? "No medical record" : patient.MedicalRecord)</td>
+                                    <td>@(string.IsNullOrEmpty(patient.Medicine) ? "No medicine recorded" : patient.Medicine)</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" onclick="updatePatient(@patient.PatientId, '@patient.FirstName @patient.LastName', '@(patient.Disease ?? "")','@(patient.MedicalRecord ?? "")', '@(patient.Medicine ?? "")')">
+                                            <i class="fas fa-edit me-1"></i>Update
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Update Patient Modal -->
+<div class="modal fade" id="updatePatientModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Patient: <span id="patientName"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="patientId" />
+                <div class="mb-3">
+                    <label class="form-label">Disease</label>
+                    <input type="text" id="disease" class="form-control" placeholder="Enter current disease/condition" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">MedicalRecord</label>
+                    <input type="text" id="medicalRecord" class="form-control" placeholder="Enter current medical record" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Medicine</label>
+                    <input type="text" id="medicine" class="form-control" placeholder="Enter current medicine" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="savePatientUpdate()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function updatePatient(patientId, patientName, disease, medicalRecord, medicine) {
+            document.getElementById('patientId').value = patientId;
+            document.getElementById('patientName').textContent = patientName;
+            document.getElementById('disease').value = disease;
+            document.getElementById('medicalRecord').value = medicalRecord;
+            document.getElementById('medicine').value = medicine;
+
+            new bootstrap.Modal(document.getElementById('updatePatientModal')).show();
+        }
+
+        function savePatientUpdate() {
+            const patientId = document.getElementById('patientId').value;
+            const disease = document.getElementById('disease').value;
+            const medicalRecord = document.getElementById('medicalRecord').value;
+            const medicine = document.getElementById('medicine').value;
+
+            fetch('/Home/UpdatePatient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    patientId: patientId,
+                    disease: disease,
+                    medicalRecord: medicalRecord,
+                    medicine: medicine,
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to update patient. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the patient');
+            });
+        }
+    </script>
+}

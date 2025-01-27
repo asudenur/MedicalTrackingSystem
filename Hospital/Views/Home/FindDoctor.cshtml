@@ -1,0 +1,93 @@
+@model IEnumerable<Doctor>
+
+@{
+    ViewData["Title"] = "Find Doctor";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="fas fa-user-md me-2"></i>Find a Doctor
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" id="searchDoctor" class="form-control" placeholder="Search by name or specialty...">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="branchFilter">
+                        <option value="">All Specialties</option>
+                        @foreach (var branch in ViewBag.Branches)
+                        {
+                            <option value="@branch.BranchId">@branch.BranchName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" id="doctorsList">
+                @foreach (var doctor in Model)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-user-md fa-2x text-primary"></i>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5 class="mb-0">Dr. @doctor.FirstName @doctor.LastName</h5>
+                                        <p class="text-muted mb-0">@doctor.Branch?.BranchName</p>
+                                    </div>
+                                </div>
+                                <a href="#" class="btn btn-primary btn-sm" onclick="bookAppointment(@doctor.DoctorId)">
+                                    <i class="fas fa-calendar-plus me-1"></i>Book Appointment
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#searchDoctor').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $("#doctorsList .col-md-6").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            $('#branchFilter').on('change', function() {
+                var value = $(this).val();
+                if (value === '') {
+                    $("#doctorsList .col-md-6").show();
+                } else {
+                    $("#doctorsList .col-md-6").hide();
+                    $("#doctorsList .col-md-6[data-branch='" + value + "']").show();
+                }
+            });
+        });
+
+        function bookAppointment(doctorId) {
+            if (confirm('Do you want to book an appointment with this doctor?')) {
+                $.post('/Home/BookAppointment', { doctorId: doctorId }, function(result) {
+                    if (result.success) {
+                        alert('Appointment booked successfully!');
+                    } else {
+                        alert('Failed to book appointment. Please try again.');
+                    }
+                });
+            }
+        }
+    </script>
+} 

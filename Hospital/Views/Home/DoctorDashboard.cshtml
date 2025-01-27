@@ -1,0 +1,49 @@
+@model Hospital.Models.ViewModels.DoctorDashboardViewModel
+
+@{
+    ViewData["Title"] = "Doctor Dashboard";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-user-md me-2"></i>Doctor Profile
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="dashboard-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h4>Dr. @Model.FirstName @Model.LastName</h4>
+                        <p class="text-muted">@Model.BranchName</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold"><i class="fas fa-id-card me-2"></i>TC Identity Number:</label>
+                        <p>@Model.TC</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold"><i class="fas fa-user me-2"></i>Username:</label>
+                        <p>@Model.UserName</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users dashboard-icon"></i>
+                    <h5 class="card-title">My Patients</h5>
+                    <p class="card-text">View and manage your patients</p>
+                    <a asp-action="MyPatients" class="btn btn-primary">
+                        <i class="fas fa-arrow-right me-2"></i>View Patients
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

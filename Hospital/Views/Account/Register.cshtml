@@ -1,0 +1,97 @@
+@model Hospital.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h2 class="card-title text-center">Register</h2>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p>@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+                <form asp-action="Register" method="post">
+                    <div class="form-group mb-3">
+                        <label asp-for="FirstName">First Name</label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="LastName">Last Name</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="TC">TC Identity Number</label>
+                        <input asp-for="TC" class="form-control" />
+                        <span asp-validation-for="TC" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Password">Password</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="UserType">User Type</label>
+                        <select asp-for="UserType" class="form-control" id="userType">
+                            <option value="">Select User Type</option>
+                            <option value="Doctor">Doctor</option>
+                            <option value="Patient">Patient</option>
+                        </select>
+                        <span asp-validation-for="UserType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3" id="branchSection" style="display: none;">
+                        <label asp-for="BranchId">Branch</label>
+                        <select asp-for="BranchId" class="form-control">
+                            <option value="">Select Branch</option>
+                            @foreach (var branch in ViewBag.Branches)
+                            {
+                                <option value="@branch.BranchId">@branch.BranchName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="BranchId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3" id="ageSection" style="display: none;">
+                        <label asp-for="Age">Age</label>
+                        <input asp-for="Age" class="form-control" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </div>
+                    <div class="text-center">
+                        <a asp-action="Login">Already have an account? Login here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('userType').addEventListener('change', function() {
+            var branchSection = document.getElementById('branchSection');
+            var ageSection = document.getElementById('ageSection');
+            
+            if (this.value === 'Doctor') {
+                branchSection.style.display = 'block';
+                ageSection.style.display = 'none';
+            } else if (this.value === 'Patient') {
+                branchSection.style.display = 'none';
+                ageSection.style.display = 'block';
+            } else {
+                branchSection.style.display = 'none';
+                ageSection.style.display = 'none';
+            }
+        });
+    </script>
+} 

@@ -1,0 +1,40 @@
+@model Hospital.Models.ViewModels.PatientDashboardViewModel
+
+@{
+    ViewData["Title"] = "Patient Dashboard";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-user me-2"></i>Patient Profile
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="dashboard-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h4>@Model.FirstName @Model.LastName</h4>
+                        <p class="text-muted">Patient ID: @Model.PatientId</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold"><i class="fas fa-id-card me-2"></i>TC Identity Number:</label>
+                        <p>@Model.TC</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold"><i class="fas fa-birthday-cake me-2"></i>Age:</label>
+                        <p>@Model.Age years old</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold"><i class="fas fa-notes-medical me-2"></i>Current Condition:</label>
+                        <p>@(string.IsNullOrEmpty(Model.Disease) ? "No condition recorded" : Model.Disease)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

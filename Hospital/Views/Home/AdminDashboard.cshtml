@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-user-md me-2"></i>Manage Doctors
+                    </h3>
+                </div>
+                <div class="card-body text-center">
+                    <div class="dashboard-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h5 class="card-title">Doctors</h5>
+                    <p class="card-text">Add, edit, or remove doctors</p>
+                    <a asp-action="ManageDoctors" class="btn btn-primary">
+                        <i class="fas fa-cog me-2"></i>Manage Doctors
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-users me-2"></i>Manage Patients
+                    </h3>
+                </div>
+                <div class="card-body text-center">
+                    <div class="dashboard-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h5 class="card-title">Patients</h5>
+                    <p class="card-text">Add, edit, or remove patients</p>
+                    <a asp-action="ManagePatients" class="btn btn-primary">
+                        <i class="fas fa-cog me-2"></i>Manage Patients
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
