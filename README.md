@@ -1,4 +1,4 @@
-WEB TEKNOLOJİLERİ FİNAL PROJESİ RAPORU
+WEB TEKNOLOJİLERİ FİNAL PROJESİ RAPORU <br>
 TIBBİ TAKİP SİSTEMİ
 Bu proje, bir hastane yönetim sistemini simüle etmek amacıyla geliştirilmiş bir web uygulamasıdır. Uygulama, kullanıcıların doktor ve hasta bilgilerini yönetmelerine, giriş yapmalarına ve kaydolmalarına olanak tanıyan bir platform sağlar. Ayrıca, uygulamanın Docker ile kapsüllenmesi, yazılımın taşınabilirliğini artırarak herhangi bir ortamda kolayca çalıştırılmasını mümkün kılar.
 Proje Özellikleri
